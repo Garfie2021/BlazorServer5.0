@@ -1,0 +1,2 @@
+# BlazorServer5.0
+BlazorServerアプリケーションのサンプルプログラム
