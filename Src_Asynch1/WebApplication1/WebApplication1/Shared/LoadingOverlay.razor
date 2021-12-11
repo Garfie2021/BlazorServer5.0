@@ -1,0 +1,16 @@
+﻿
+@if (Visible)
+{
+    <div id="loading">
+        <div class="w-100 d-flex justify-content-center align-items-center">
+            <div class="spinner-border text-primary spinner-custom" role="status"></div>
+        </div>
+        <strong><span>処理中です...</span></strong><br>
+    </div>
+}
+
+@code {
+
+    [Parameter] public bool Visible { get; set; } = false;
+
+}

@@ -6,11 +6,45 @@
 
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 
+<LoadingOverlay Visible="@IsLoadingOverlay" />
+
+
 @code {
+
+    [Inject] private IJSRuntime JsRuntime { get; set; }
+
+    private bool IsLoadingOverlay = false;
+
     private int currentCount = 0;
 
-    private void IncrementCount()
+    private async Task IncrementCount()
     {
+        var confirmed = await JsRuntime.InvokeAsync<bool>("confirm", "開始しますか？");
+        if (!confirmed)
+        {
+            return;
+        }
+
+        IsLoadingOverlay = true;
+        StateHasChanged();
+
+        await ビジネスロジック();
+
         currentCount++;
+
+        IsLoadingOverlay = false;
+        StateHasChanged();
+
+        await JsRuntime.InvokeVoidAsync("alert", "終了しました。");
+    }
+
+    /// <summary>
+    /// ビジネスロジック、DB処理などは全てstaticで実装するとパフォーマンスが良い。
+    /// </summary>
+    private static async Task ビジネスロジック()
+    {
+        // なんらかの重たい処理を実行 Start
+        await Task.Delay(5000);
+        // なんらかの重たい処理を実行 End
     }
 }
