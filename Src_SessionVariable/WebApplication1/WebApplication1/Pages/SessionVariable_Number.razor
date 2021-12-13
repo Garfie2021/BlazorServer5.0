@@ -1,0 +1,44 @@
+﻿@page "/SessionVariable_Number"
+@inject ProtectedSessionStorage _ProtectedSessionStore
+
+<h1>セッション変数で数値型の値を扱う</h1>
+<br />
+
+<h3>セッション変数の値 : @_SessionVariable</h3>
+<br />
+
+<button class="btn btn-primary" @onclick="SetSessionVariable">セッション変数に値を入力</button>
+<button class="btn btn-primary" @onclick="GetSessionVariable">セッション変数の値を出力</button>
+<button class="btn btn-primary" @onclick="DeleteSessionVariable">セッション変数の値を削除</button>
+
+@code {
+    private int? _SessionVariable;
+
+    private async Task SetSessionVariable()
+    {
+        // セッション変数に値を入力
+        await _ProtectedSessionStore.SetAsync(SessionKey.Number, 1);
+    }
+
+    private async Task GetSessionVariable()
+    {
+        _SessionVariable = null;
+
+        // セッション変数の値を出力
+        var result = await _ProtectedSessionStore.GetAsync<int>(SessionKey.Number);
+
+        if (result.Success)
+        {
+            // 該当するセッション変数が有るので、画面に表示する。
+            _SessionVariable = result.Value;
+        }
+    }
+
+    private async Task DeleteSessionVariable()
+    {
+        // セッション変数の値を削除
+        await _ProtectedSessionStore.DeleteAsync(SessionKey.Number);
+    }
+
+}
+
