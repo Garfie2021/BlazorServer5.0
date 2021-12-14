@@ -36,10 +36,7 @@ namespace WebApplication1
             {
                 options.Cookie.Name = "WebApplication1.Session.2021.demo";
                 options.Cookie.IsEssential = true;
-                options.Cookie.SameSite = SameSiteMode.Lax;
-                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
             });
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
