@@ -28,6 +28,14 @@ namespace WebApplication1
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
+
+            services.AddHttpContextAccessor();
+
+            services.AddSession(options =>
+            {
+                options.Cookie.Name = "WebApplication1.Session.2021.demo";
+                options.Cookie.IsEssential = true;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,6 +53,8 @@ namespace WebApplication1
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {

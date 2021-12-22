@@ -1,0 +1,28 @@
+﻿@page "/SessionID"
+@using Microsoft.AspNetCore.Http;
+
+<h1>Counter</h1>
+
+
+<h1>セッションID</h1>
+<br />
+<h3>セッションID : @_SessionID</h3>
+<br />
+<button class="btn btn-primary" @onclick="GetSessionID">セッションID</button>
+
+
+@code {
+
+    [Inject] protected IHttpContextAccessor _HttpContextAccessor { get; set; }
+
+    private string? _SessionID;
+
+    private async Task GetSessionID()
+    {
+        var a = _HttpContextAccessor;
+        var b = a.HttpContext;
+        var c = b.Session;      // WebSocketが有効じゃないとここでExceptionが発生する。
+        _SessionID = c.Id;
+    }
+
+}
