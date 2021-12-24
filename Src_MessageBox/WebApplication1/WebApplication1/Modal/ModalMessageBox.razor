@@ -1,0 +1,103 @@
+﻿@using WebApplication1;
+@inject IModalService ModalService
+
+<div>
+    <table>
+        <tbody>
+            <tr>
+                <td width="90">
+                    @if (Icon == MessageBoxIcon.Information)
+                    {
+                        <img width="70" src="img/MessageIcon/Information.jpg" />
+                    }
+                    else if (Icon == MessageBoxIcon.Question)
+                    {
+                        <img width="70" src="img/MessageIcon/Question.jpg" />
+                    }
+                    else if (Icon == MessageBoxIcon.Warning)
+                    {
+                        <img width="70" src="img/MessageIcon/Warning.jpg" />
+                    }
+                    else if (Icon == MessageBoxIcon.Error)
+                    {
+                        <img width="70" src="img/MessageIcon/Error.jpg" />
+                    }
+                </td>
+                <td>
+                    @if (Message.IndexOf("\r\n") < 0)
+                    {
+                        <p>@Message</p>
+                    }
+                    else
+                    {
+                        <p>
+                            @foreach (var textRow in Message.Split("\r\n"))
+                            {
+                                <span>@textRow</span><br>
+                            }
+                        </p>
+                    }
+
+                    @if (!string.IsNullOrEmpty(MessageDetail))
+                    {
+                        <div class="messagebox-detailmessage">
+                            @if (MessageDetail.IndexOf("\r\n") < 0)
+                            {
+                                <p>@MessageDetail</p>
+                            }
+                            else
+                            {
+                                <p>
+                                    @foreach (var textRow in MessageDetail.Split("\r\n"))
+                                    {
+                                        <span>@textRow</span><br>
+                                    }
+                                </p>
+                            }
+                        </div>
+                    }
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p><br></p>
+
+    @if (Buttons == MessageBoxButtons.YesNo)
+    {
+        <div class="right">
+            <button @onclick="Yes" class="btn btn-primary">　はい　</button><span>&nbsp;&nbsp;</span>
+            <button @onclick="No" class="btn btn-secondary">　いいえ　</button>
+        </div>
+    }
+    else if (Buttons == MessageBoxButtons.OK)
+    {
+        <button @onclick="Ok" class="btn btn-primary messagebox-btn">　OK　</button>
+    }
+
+</div>
+
+
+@code {
+
+    [CascadingParameter]
+    BlazoredModalInstance BlazoredModal { get; set; }
+
+    [Parameter]
+    public string Message { get; set; }
+
+    [Parameter]
+    public string MessageDetail { get; set; }
+
+    [Parameter]
+    public MessageBoxButtons Buttons { get; set; }
+
+    [Parameter]
+    public MessageBoxIcon Icon { get; set; }
+
+
+    async Task Yes() => await BlazoredModal.CloseAsync(ModalResult.Ok(true));
+    async Task No() => await BlazoredModal.CancelAsync();
+    async Task Ok() => await BlazoredModal.CancelAsync();
+
+}
