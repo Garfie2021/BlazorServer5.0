@@ -1,17 +1,52 @@
 ﻿@inherits LayoutComponentBase
 
+<div class="header-wrapper">
+    <div class="headerParent">
+        <div>
+            <b @onclick="Title"><font size="5">@TitleName</font></b>
+        </div>
+
+        <div>
+            <a href="/User/UserProFile" class="a-noline">@LoginUser</a>
+        </div>
+    </div>
+</div>
+
 <div class="page">
     <div class="sidebar">
         <NavMenu />
     </div>
 
     <div class="main">
-        <div class="top-row px-4">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-        </div>
-
         <div class="content px-4">
             @Body
         </div>
     </div>
 </div>
+
+@code {
+
+    [Inject] protected NavigationManager NavManager { get; set; }
+
+    [CascadingParameter] public string TitleName { get; set; }
+    [CascadingParameter] public string LoginUser { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        TitleName = "〇〇〇〇〇〇〇〇〇〇〇システム名";
+        LoginUser = "ログインユーザー名";
+    }
+
+    private void Title()
+    {
+        NavManager.NavigateTo("/");
+    }
+
+    private async Task Logout()
+    {
+        LoginUser = "";
+    }
+
+}
+
