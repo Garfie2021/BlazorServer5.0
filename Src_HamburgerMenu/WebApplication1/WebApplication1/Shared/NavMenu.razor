@@ -1,37 +1,135 @@
-﻿<div class="top-row pl-4 navbar navbar-dark">
-    <a class="navbar-brand" href="">WebApplication1</a>
-    <button class="navbar-toggler" @onclick="ToggleNavMenu">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-</div>
+﻿
+@*ハンバーガーメニュー*@
+@if (HamburgerMenuChecked)
+{
+    <input type="checkbox" class="hamburger-menu openSidebarMenu" id="openSidebarMenu" checked="checked" @onclick="HamburgerMenu">
+}
+else
+{
+    <input type="checkbox" class="hamburger-menu openSidebarMenu" id="openSidebarMenu" @onclick="HamburgerMenu">
+}
+<label for="openSidebarMenu" class="sidebarIconToggle">
+    <div class="spinner diagonal part-1"></div>
+    <div class="spinner horizontal"></div>
+    <div class="spinner diagonal part-2"></div>
+</label>
 
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-    <ul class="nav flex-column">
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="oi oi-plus" aria-hidden="true"></span> Counter
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="fetchdata">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
-            </NavLink>
-        </li>
+@*サイドバーメニュー*@
+<div id="sidebarMenu">
+    <ul class="sidebarMenuInner">
+        <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+            <ul class="nav flex-column">
+
+                <li class="nav-item px-3" style="@DispA">
+                    <div class="a2" @onclick="MidashiA">
+                        &nbsp;<b>Home</b>
+                    </div>
+                    <ul class="inner child" style="@StyleA">
+                        <li class="nav-item px-3 sidebarMenuChildItem">
+                            <NavLink class="nav-link nav3" href="/" @onclick="SideMenuClose">
+                                <div class="nav3">Home</div>
+                            </NavLink>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-item px-3" style="@DispB">
+                    <div class="a2" @onclick="MidashiB">
+                        &nbsp;<b>Test</b>
+                    </div>
+                    <ul class="inner child" style="@StyleB">
+                        <li class="nav-item px-3 sidebarMenuChildItem">
+                            <NavLink class="nav-link nav3" href="counter" @onclick="SideMenuClose">
+                                <div class="nav3">Counter</div>
+                            </NavLink>
+                        </li>
+                        <li class="nav-item px-3 sidebarMenuChildItem">
+                            <NavLink class="nav-link nav3" href="fetchdata" @onclick="SideMenuClose">
+                                <div class="nav3">Fetchdata</div>
+                            </NavLink>
+                        </li>
+                    </ul>
+                </li>
+
+            </ul>
+        </div>
     </ul>
+    <br><br>
 </div>
 
 @code {
+
+    private const string DISPLAY_NONE = "display: none;";
+    private const string DISPLAY_BLOCK = "display: block;";
+
+
+    private string StyleA = DISPLAY_NONE;
+    private string StyleB = DISPLAY_NONE;
+
+    private string DispA = DISPLAY_NONE;
+    private string DispB = DISPLAY_NONE;
+
+
     private bool collapseNavMenu = true;
 
     private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private bool HamburgerMenuChecked = false;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        DispA = "";
+        DispB = "";
+
+        StateHasChanged();
+    }
+
+
+    private void HamburgerMenu()
+    {
+        if (HamburgerMenuChecked)
+        {
+            HamburgerMenuChecked = false;
+        }
+        else
+        {
+            HamburgerMenuChecked = true;
+        }
+    }
 
     private void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
     }
+
+    private void MidashiA()
+    {
+        TglTenkai(ref StyleA);
+    }
+
+    private void MidashiB()
+    {
+        TglTenkai(ref StyleB);
+    }
+
+    private async Task SideMenuClose()
+    {
+        HamburgerMenuChecked = false;
+    }
+
+
+    private void TglTenkai(ref string style)
+    {
+        if (style == "display: none;")
+        {
+            style = "display: block;";
+        }
+        else
+        {
+            style = "display: none;";
+        }
+    }
+
+
 }
