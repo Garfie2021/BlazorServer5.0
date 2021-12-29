@@ -37,6 +37,7 @@ namespace WebApplication1
 
             var moviesModal = Modal.Show<ModalMessageBox>(caption, parameters);
             var result = await moviesModal.Result;
+            await Task.Delay(1);//これがないとメッセージボックスが閉じられるまでのタイムラグが発生することがある。
 
             return result;
         }
@@ -51,6 +52,7 @@ namespace WebApplication1
 
             var moviesModal = Modal.Show<ModalMessageBox>(caption, parameters);
             var result = await moviesModal.Result;
+            await Task.Delay(1);//これがないとメッセージボックスが閉じられるまでのタイムラグが発生することがある。
 
             return result;
         }
