@@ -1,0 +1,67 @@
+﻿@page "/MessageBoxSample"
+
+
+
+<br>
+<button class="btn btn-primary" @onclick="Message1">確認メッセージ　＋　完了メッセージ</button>
+<br>
+
+<br>
+<button class="btn btn-primary" @onclick="Message2">完了メッセージ</button>
+<br>
+
+<br>
+<button class="btn btn-primary" @onclick="Message3">完了メッセージ　詳細メッセージ有り</button>
+<br>
+
+<br>
+<button class="btn btn-primary" @onclick="Message4">警告メッセージ</button>
+<br>
+
+<br>
+<button class="btn btn-primary" @onclick="Message5">エラーメッセージ</button>
+<br>
+
+
+@code {
+    private int currentCount = 0;
+
+    [CascadingParameter] public IModalService Modal { get; set; }
+
+
+    private async Task Message1()
+    {
+        var result = await (new MessageBox(Modal)).Show("確認", "登録しますか？\r\n\r\n詳細があれば・・・",
+            MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+        if (result.Cancelled)
+        {
+            return;
+        }
+
+        // 正常終了
+        await (new MessageBox(Modal)).Show("完了", $"〇〇〇〇〇〇〇〇〇〇〇〇〇〇〇〇が完了しました。", MessageBoxButtons.OK, MessageBoxIcon.Information);
+    }
+
+    private async Task Message2()
+    {
+        await (new MessageBox(Modal)).Show("完了", $"〇〇〇〇〇〇〇〇〇〇〇〇〇〇〇〇が完了しました。", MessageBoxButtons.OK, MessageBoxIcon.Information);
+    }
+
+    private async Task Message3()
+    {
+        await (new MessageBox(Modal)).Show("完了", $"〇〇〇〇〇〇〇〇〇〇〇〇〇〇〇〇が完了しました。", "詳細は・・・・・・・・・・・\r\n・・・・・・・・・・・\r\n・・・・・・・・・・・\r\n", MessageBoxButtons.OK, MessageBoxIcon.Information);
+    }
+
+    private async Task Message4()
+    {
+        await (new MessageBox(Modal)).Show("警告", $"〇〇〇〇〇〇〇〇〇〇〇〇〇〇〇〇が完了しました。", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+    }
+
+    private async Task Message5()
+    {
+        await (new MessageBox(Modal)).Show("エラー", $"〇〇〇〇〇〇〇〇〇〇〇〇〇〇〇〇が完了しました。", MessageBoxButtons.OK, MessageBoxIcon.Error);
+    }
+
+}
+
+
