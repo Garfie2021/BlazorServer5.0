@@ -1,4 +1,5 @@
 ﻿@page "/counter"
+@inject ILogger<Counter> _Logger
 
 <h1>Counter</h1>
 
@@ -12,5 +13,13 @@
     private void IncrementCount()
     {
         currentCount++;
+
+        _Logger.LogDebug($"Debug level log write.{currentCount}");
+
+        _Logger.LogInformation($"Information level log write.{currentCount}");
+
+        _Logger.LogWarning($"Warning level log write.{currentCount}");
+
+        _Logger.LogError($"Error level log write.{currentCount}");
     }
 }
