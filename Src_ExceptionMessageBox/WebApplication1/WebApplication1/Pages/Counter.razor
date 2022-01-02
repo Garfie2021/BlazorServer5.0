@@ -8,18 +8,30 @@
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 
 @code {
+    [CascadingParameter] private UnexpectedException _UnexpectedException { get; set; }
+
     private int currentCount = 0;
 
     private void IncrementCount()
     {
-        currentCount++;
+        try
+        {
+            currentCount++;
 
-        _Logger.LogDebug($"Debug level log write.{currentCount}");
+            _Logger.LogDebug($"Debug level log write.{currentCount}");
 
-        _Logger.LogInformation($"Information level log write.{currentCount}");
+            _Logger.LogInformation($"Information level log write.{currentCount}");
 
-        _Logger.LogWarning($"Warning level log write.{currentCount}");
+            _Logger.LogWarning($"Warning level log write.{currentCount}");
 
-        _Logger.LogError($"Error level log write.{currentCount}");
+            _Logger.LogError($"Error level log write.{currentCount}");
+
+            throw new NotImplementedException();
+        }
+        catch (Exception ex)
+        {
+            _UnexpectedException.Show(ex);
+        }
     }
+
 }

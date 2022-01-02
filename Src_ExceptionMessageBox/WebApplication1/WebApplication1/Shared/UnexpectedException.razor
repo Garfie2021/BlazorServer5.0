@@ -1,0 +1,22 @@
+﻿@inject ILogger<UnexpectedException> Logger
+
+<CascadingValue Value=this>
+    @ChildContent
+</CascadingValue>
+
+@code {
+
+    [CascadingParameter] public IModalService Modal { get; set; }
+
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    public void Show(Exception ex)
+    {
+        System.Diagnostics.Debug.WriteLine(ex.Message + "\r\n" + ex.StackTrace);
+
+        Logger.LogError(ex.Message + "\r\n" + ex.StackTrace);
+
+        _ = (new MessageBox(Modal)).Show("エラー", "処理に失敗しました。", ex.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
+    }
+
+}
