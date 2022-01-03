@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WebApplication1.Data;
+using WebApplication1.SharedData;
 
 namespace WebApplication1
 {
@@ -33,6 +34,11 @@ namespace WebApplication1
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            // on Windows
+            FolderPath.Download = env.WebRootPath + "\\..\\Download";
+            // on Linux
+            //FolderPath.Download = env.WebRootPath + "/../Download";
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
