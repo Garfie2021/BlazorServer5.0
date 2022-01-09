@@ -1,0 +1,35 @@
+﻿@page "/DownloadFile"
+@inject IJSRuntime JS
+
+<h1>Download File</h1>
+
+<button class="btn btn-primary" @onclick="DownloadFileExec_Text">Text file download</button>
+
+<button class="btn btn-primary" @onclick="DownloadFileExec_Image">Image file download</button>
+
+
+@code {
+
+    private async Task DownloadFileExec_Text()
+    {
+        var filename = "ビジネスデータ.txt";
+
+        //ビジネスロジックで生成したデータ（仮）
+        var textData = "1234567890 abcd あいうえお";
+        var byteData = Encoding.UTF8.GetBytes(textData);
+
+        await JS.InvokeVoidAsync("saveAsFile", filename, Convert.ToBase64String(byteData));
+    }
+
+    private async Task DownloadFileExec_Image()
+    {
+        var filename = "Question.jpg";
+
+        var path = Path.Combine(FolderPath.Download, filename);
+
+        var data = File.ReadAllBytes(path);
+
+        await JS.InvokeVoidAsync("saveAsFile", filename, Convert.ToBase64String(data));
+    }
+
+}
