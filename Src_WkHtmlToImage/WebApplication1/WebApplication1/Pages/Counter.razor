@@ -1,16 +1,33 @@
 ﻿@page "/counter"
+@using CoreHtmlToImage
+@inject IJSRuntime JS
 
 <h1>Counter</h1>
 
 <p>Current count: @currentCount</p>
 
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<br>
+<br>
+<button class="btn btn-primary" @onclick="DownloadFileExec_Image">Image file download</button>
 
 @code {
     private int currentCount = 0;
 
+    private static HtmlConverter _HtmlConverter = new HtmlConverter();
+
     private void IncrementCount()
     {
         currentCount++;
+    }
+
+    private async Task DownloadFileExec_Image()
+    {
+        var html = string.Format(TemplateData.CounterHtml, TemplateData.StyleCSS, currentCount);
+
+        var imageData = _HtmlConverter.FromHtmlString(html, 800, ImageFormat.Jpg, 100);
+
+        var filename = "Counter.jpg";
+        await JS.InvokeVoidAsync("saveAsFile", filename, Convert.ToBase64String(imageData));
     }
 }

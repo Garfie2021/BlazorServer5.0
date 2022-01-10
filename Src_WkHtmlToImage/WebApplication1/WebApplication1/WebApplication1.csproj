@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="CoreHtmlToImage" Version="1.0.6" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="Download\Question.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
