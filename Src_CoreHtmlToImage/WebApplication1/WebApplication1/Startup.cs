@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
@@ -35,10 +36,13 @@ namespace WebApplication1
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            var templateFolderPath_Html = "";
+
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 // on Windows
                 FolderPath.Download = env.WebRootPath + "\\..\\Download";
+                templateFolderPath_Html = env.WebRootPath + "\\..\\Template\\Html";
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
@@ -49,6 +53,12 @@ namespace WebApplication1
             {
                 throw new NotImplementedException();
             }
+
+            // テンプレートファイルをstaticデータとしてアプリ起動時に読込み、キャッシュデータとして使い回すことでパフォーマンスを上げる。
+            var htmlFileName = "Counter.html";
+            var styleFileName = "style.html";
+            TemplateData.CounterHtml = File.ReadAllText(Path.Combine(templateFolderPath_Html, htmlFileName));
+            TemplateData.StyleCSS = File.ReadAllText(Path.Combine(templateFolderPath_Html, styleFileName));
 
             if (env.IsDevelopment())
             {
