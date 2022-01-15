@@ -9,8 +9,12 @@
 @code {
     private int currentCount = 0;
 
+    [Inject] private IJSRuntime JsRuntime { get; set; }
+
     private void IncrementCount()
     {
         currentCount++;
+
+        JsRuntime.InvokeVoidAsync("NavMenuIdInputValue", currentCount);
     }
 }
