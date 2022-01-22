@@ -1,0 +1,98 @@
+﻿@page "/OnEvent"
+
+<h1>OnEvent</h1>
+<hr>
+
+<h3>&lt;input type="text"&gt;</h3>
+<p>Text onchange Event / ChangeEventArgs value : @onchange_ChangeEventArgsvalue1</p>
+<p>Text oninput Event / ChangeEventArgs value : @oninput_ChangeEventArgsvalue1</p>
+<input type="text" @onchange="OnChangeEvent1" @oninput="OnInputEvent1" />
+
+<hr>
+
+<h3>&lt;input type="date"&gt;</h3>
+<p>Datetime onchange Event / ChangeEventArgs value : @onchange_ChangeEventArgsvalue2</p>
+<p>Datetime oninput Event / ChangeEventArgs value : @oninput_ChangeEventArgsvalue2</p>
+<input type="date" @onchange="OnChangeEvent2" @oninput="OnInputEvent2" max="9999-12-31" />
+
+<hr>
+
+<EditForm Model="_test">
+    <h3>&lt;InputText&gt;</h3>
+    <p>Text onchange Event / ChangeEventArgs value : @onchange_ChangeEventArgsvalue3</p>
+    <p>Text oninput Event / ChangeEventArgs value : @oninput_ChangeEventArgsvalue3</p>
+    <InputText @bind-Value="_test.test1" @onchange="OnChangeEvent3" @oninput="OnInputEvent3" />
+</EditForm>
+<br>
+<br>
+
+@*
+    <hr>
+    <h3>&lt;InputDate&gt;</h3>
+    <p>Datetime onchange Event / ChangeEventArgs value : @onchange_ChangeEventArgsvalue4</p>
+    <p>Datetime oninput Event / ChangeEventArgs value : @oninput_ChangeEventArgsvalue4</p>
+    <InputDate @onchange="OnChangeEvent4" @oninput="OnInputEvent4" max="9999-12-31" />
+*@
+
+
+@code {
+    private class test
+    {
+        public string test1;
+    }
+
+    private test _test = new();
+
+    private string onchange_ChangeEventArgsvalue1;
+    private string oninput_ChangeEventArgsvalue1;
+
+    private void OnChangeEvent1(ChangeEventArgs args)
+    {
+        onchange_ChangeEventArgsvalue1 = (string)args.Value;
+    }
+
+    private void OnInputEvent1(ChangeEventArgs args)
+    {
+        oninput_ChangeEventArgsvalue1 = (string)args.Value;
+    }
+
+    private string onchange_ChangeEventArgsvalue2;
+    private string oninput_ChangeEventArgsvalue2;
+
+    private void OnChangeEvent2(ChangeEventArgs args)
+    {
+        onchange_ChangeEventArgsvalue2 = args.Value.ToString();
+    }
+
+    private void OnInputEvent2(ChangeEventArgs args)
+    {
+        oninput_ChangeEventArgsvalue2 = args.Value.ToString();
+    }
+
+    private string onchange_ChangeEventArgsvalue3;
+    private string oninput_ChangeEventArgsvalue3;
+
+    private void OnChangeEvent3(ChangeEventArgs args)
+    {
+        onchange_ChangeEventArgsvalue3 = (string)args.Value;
+    }
+
+    private void OnInputEvent3(ChangeEventArgs args)
+    {
+        oninput_ChangeEventArgsvalue3 = (string)args.Value;
+    }
+
+    //private DateTime onchange_ChangeEventArgsvalue4;
+    //private DateTime oninput_ChangeEventArgsvalue4;
+
+    //private void OnChangeEvent4<T>(T value)
+    //{
+    //    //onchange_ChangeEventArgsvalue4 = DateTime.Parse((string)args.Value);
+    //}
+
+    //private void OnInputEvent4(ChangeEventArgs args)
+    //{
+    //    oninput_ChangeEventArgsvalue4 = DateTime.Parse((string)args.Value);
+    //}
+
+}
