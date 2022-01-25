@@ -63,17 +63,17 @@
 
     <p><br></p>
 
-    @if (Buttons == MessageBoxButtons.YesNo)
-    {
-        <div class="right">
-            <button @onclick="Yes" class="btn btn-primary">　はい　</button><span>&nbsp;&nbsp;</span>
-            <button @onclick="No" class="btn btn-secondary">　いいえ　</button>
-        </div>
-    }
-    else if (Buttons == MessageBoxButtons.OK)
-    {
-        <button @onclick="Ok" class="btn btn-primary messagebox-btn">　OK　</button>
-    }
+    <div class="text-right">
+        @if (Buttons == MessageBoxButtons.YesNo)
+        {
+            <button @onclick="Yes" class="btn btn-primary">　はい　</button>
+            <button @onclick="No" class="btn btn-secondary ml-3">　いいえ　</button>
+        }
+        else if (Buttons == MessageBoxButtons.OK)
+        {
+            <button @onclick="Ok" class="btn btn-primary messagebox-btn">　OK　</button>
+        }
+    </div>
 
 </div>
 
