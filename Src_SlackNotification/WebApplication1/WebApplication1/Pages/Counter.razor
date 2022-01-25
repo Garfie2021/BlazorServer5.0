@@ -12,5 +12,7 @@
     private void IncrementCount()
     {
         currentCount++;
+
+        Slack.PostExec(currentCount.ToString());
     }
 }
