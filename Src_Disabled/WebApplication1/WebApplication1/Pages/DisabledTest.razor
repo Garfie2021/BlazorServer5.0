@@ -1,0 +1,15 @@
+﻿@page "/DisabledTest"
+
+<h1>Disabled Test</h1>
+<br>
+
+<input type="checkbox" @bind="@_Check" />
+
+<input type="text" @bind="@_Name" class="form-control" disabled="@_Check.ToDisabled()" style="width:100px" />
+
+@code {
+    private bool _Check = false;
+
+    private string _Name = "";
+
+}
