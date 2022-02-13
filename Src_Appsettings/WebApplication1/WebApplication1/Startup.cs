@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using WebApplication1.Common;
 using WebApplication1.Data;
 
 namespace WebApplication1
@@ -17,6 +18,8 @@ namespace WebApplication1
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
+            SharedData.Title = Configuration["App:Title"];
         }
 
         public IConfiguration Configuration { get; }
