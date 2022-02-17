@@ -1,0 +1,34 @@
+﻿@page "/DownloadFile"
+@inject IBlazorDownloadFileService BlazorDownloadFileService
+
+<h1>Download CSV File</h1>
+
+<button class="btn btn-primary" @onclick="DownloadExec">Text file download</button>
+
+
+@code {
+
+    private async Task DownloadExec()
+    {
+        var testCsvList = new List<TestCsv>();
+        testCsvList.Add(new TestCsv()
+        {
+            TestClm2 = "1111"
+        });
+
+        using ( var memoryStream = new MemoryStream())
+        using ( var writer = new StreamWriter(memoryStream, Encoding.UTF8))
+        using ( var csv = new CsvWriter(writer, CultureInfo.CurrentCulture))
+        {
+            csv.WriteRecords(testCsvList);
+            writer.Flush();
+            var bytes = memoryStream.ToArray();
+
+            string filename = $"{DateTime.Now.ToString("yyyyMMddhhmmss")}.csv";
+            var result = await BlazorDownloadFileService.DownloadFile(filename, bytes, System.Net.Mime.MediaTypeNames.Application.Octet);
+        }
+
+
+    }
+
+}
