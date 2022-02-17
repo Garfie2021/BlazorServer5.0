@@ -5,7 +5,6 @@
 
 <button class="btn btn-primary" @onclick="DownloadExec">Text file download</button>
 
-
 @code {
 
     private async Task DownloadExec()
@@ -27,8 +26,5 @@
             string filename = $"{DateTime.Now.ToString("yyyyMMddhhmmss")}.csv";
             var result = await BlazorDownloadFileService.DownloadFile(filename, bytes, System.Net.Mime.MediaTypeNames.Application.Octet);
         }
-
-
     }
-
 }
