@@ -1,5 +1,5 @@
 ﻿@page "/DownloadFile"
-@inject IBlazorDownloadFileService BlazorDownloadFileService
+@inherits Base.PageBase
 
 <h1>Download CSV File</h1>
 
@@ -16,9 +16,9 @@
             TestClm2 = "1111"
         });
 
-        using ( var memoryStream = new MemoryStream())
-        using ( var writer = new StreamWriter(memoryStream, Encoding.UTF8))
-        using ( var csv = new CsvWriter(writer, CultureInfo.CurrentCulture))
+        using (var memoryStream = new MemoryStream())
+        using (var writer = new StreamWriter(memoryStream, Encoding.UTF8))
+        using (var csv = new CsvWriter(writer, CultureInfo.CurrentCulture))
         {
             csv.WriteRecords(testCsvList);
             writer.Flush();
