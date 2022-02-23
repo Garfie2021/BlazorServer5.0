@@ -1,0 +1,40 @@
+﻿@page "/ButtonPattern"
+
+<h1>Counter</h1>
+
+<p>Current count: @currentCount</p>
+
+<EditForm Model="@_DataModel1" OnValidSubmit="@ValidSubmit">
+    <DataAnnotationsValidator />
+
+    <ValidationMessage For="@(() => _DataModel1.InputA)" />
+    <div class="row">
+        <label class="col-auto col-form-label nowrap">入力欄A<font class="" color="red">*</font></label>
+        <div class="form-group col-sm-2">
+            <input type="text" class="form-control" @bind="_DataModel1.InputA" />
+        </div>
+    </div>
+    <br>
+
+    <button type="submit" class="btn btn-min btn-primary">Submitするボタン</button><br><br>
+    <button class="btn btn-primary" @onclick="IncrementCount">Submitとonclickイベント両行するボタン</button><br><br>
+    <button type="button" class="btn btn-primary" @onclick="IncrementCount">onclickイベントのみするボタン</button><br><br>
+    <a class="btn btn-primary py-1" href="https://www.google.co.jp/" target="_blank">リンク先を別タブで開くボタン</a>
+</EditForm>
+
+
+@code {
+    private DataModel1 _DataModel1 = new DataModel1();
+
+    private int currentCount = 0;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+
+    private async Task ValidSubmit()
+    {
+        currentCount++;
+    }
+}
