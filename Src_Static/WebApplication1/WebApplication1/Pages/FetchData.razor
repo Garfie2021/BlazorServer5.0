@@ -5,6 +5,8 @@
 
 <h1>Weather forecast</h1>
 
+<p>ニューヨークとの時差： @時差 時間</p>
+
 <p>This component demonstrates fetching data from a service.</p>
 
 @if (forecasts == null)
@@ -38,9 +40,12 @@ else
 
 @code {
     private WeatherForecast[] forecasts;
+    private int 時差 = 0;
 
     protected override async Task OnInitializedAsync()
     {
         forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+
+        時差 = TimeCommon.ニューヨークとの時差(DateTime.UtcNow);
     }
 }
