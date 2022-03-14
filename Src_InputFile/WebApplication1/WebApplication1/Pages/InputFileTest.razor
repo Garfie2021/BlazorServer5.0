@@ -1,0 +1,85 @@
+﻿@page "/InputFileTest"
+
+<h1>InputFile Test</h1>
+
+<hr>
+
+<h3>Pattern 1</h3>
+<InputFile OnChange="@FileUpload1" multiple />
+
+<hr>
+
+<h3>Pattern 2</h3>
+<label class="btn btn-primary" for="file_select2">
+    複数ファイル読込み
+    <InputFile id="file_select2" style="display:none;" OnChange="@FileUpload1" multiple />
+</label>@fileName2
+
+<hr>
+
+<h3>Pattern 3</h3>
+<div class="btn btn-primary file-input-button btn-one">
+    <InputFile OnChange="@(args => FileUpload2("テストパラメータ", args))" />単一ファイル読込み
+</div>
+
+<hr>
+
+<h4>読み込んだファイルの内容</h4>
+<div>
+    @foreach (var result in resultList)
+    {
+        @result
+        <br>
+    }
+</div>
+
+
+@code {
+    private string fileName2 = "ファイルは選択されていません。";
+    private string fileName3 = "ファイルは選択されていません。";
+
+    private List<string> resultList = new List<string>();
+
+    private List<IBrowserFile> loadedFiles = new List<IBrowserFile>();
+
+    private async Task FileUpload1(InputFileChangeEventArgs e)
+    {
+        loadedFiles.Clear();
+        foreach (var file in e.GetMultipleFiles())
+        {
+            loadedFiles.Add(file);
+        }
+
+        resultList = new();
+        foreach (var file in loadedFiles)
+        {
+            resultList.Add(file.Name + "　" + file.Size.ToString() + "byte");
+
+            var buffers = new byte[file.Size];
+            await file.OpenReadStream(file.Size).ReadAsync(buffers);
+            resultList.Add(System.Text.Encoding.UTF8.GetString(buffers));
+        }
+    }
+
+    private async Task FileUpload2(string para, InputFileChangeEventArgs e)
+    {
+
+        loadedFiles.Clear();
+        foreach (var file in e.GetMultipleFiles())
+        {
+            loadedFiles.Add(file);
+        }
+
+        resultList = new();
+        resultList.Add("メソッドパラメータ = " + para);
+        foreach (var file in loadedFiles)
+        {
+            resultList.Add(file.Name + "　" + file.Size.ToString() + "byte");
+
+            var buffers = new byte[file.Size];
+            await file.OpenReadStream(file.Size).ReadAsync(buffers);
+            resultList.Add(System.Text.Encoding.UTF8.GetString(buffers));
+        }
+    }
+
+}
