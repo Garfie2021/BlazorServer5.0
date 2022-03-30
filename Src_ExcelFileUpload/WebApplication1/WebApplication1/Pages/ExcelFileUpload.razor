@@ -1,0 +1,77 @@
+﻿@page "/ExcelFileUpload"
+
+<h1>Excel file upload test</h1>
+
+<hr>
+
+<InputFile OnChange="@FileUpload1" />
+
+<hr>
+
+
+<h4>読み込んだExcelファイルの内容</h4>
+<div>
+    @foreach (var result in _ResultList)
+    {
+        @result
+        <br>
+    }
+</div>
+
+
+@code {
+    private List<string> _ResultList = new List<string>();
+
+    private List<IBrowserFile> _BrowserFileList = new List<IBrowserFile>();
+
+    private async Task FileUpload1(InputFileChangeEventArgs e)
+    {
+        try
+        {
+            _BrowserFileList.Clear();
+            foreach (var file in e.GetMultipleFiles())
+            {
+                _BrowserFileList.Add(file);
+            }
+
+            _ResultList = new();
+            foreach (var file in _BrowserFileList)
+            {
+                _ResultList.Add(file.Name + "　" + file.Size.ToString() + "byte");
+
+                var excelFileData = new byte[file.Size];
+                await file.OpenReadStream(file.Size).ReadAsync(excelFileData);
+
+                //アップロードされたExcelファイルを、WEBサーバに一旦保存。
+                var tempFilePath = Path.GetTempFileName() + ".xlsx";
+
+                //アップロードされたExcelファイルを、WEBサーバに一旦保存。
+                using (var fileStream = new FileStream(tempFilePath, FileMode.Create))
+                using (var binaryWriter = new BinaryWriter(fileStream))
+                {
+                    binaryWriter.Write(excelFileData);
+                }
+
+                // シート名リスト作成
+                var worksheetNameList = new List<string>();
+                using (var workbook = new XLWorkbook(tempFilePath))
+                {
+                    foreach (var worksheet in workbook.Worksheets)
+                    {
+                        // Excelファイルのシート名、セルの値取得まで。
+                        worksheetNameList.Add(worksheet.Name);
+                        _ResultList.Add("ワークシート名：" + worksheet.Name);
+                        _ResultList.Add("A1セル データ：" + worksheet.Cell("A1").GetString());
+                    }
+                }
+
+                File.Delete(tempFilePath);
+            }
+        }
+        catch (Exception ex)
+        {
+            var a = ex.Message;
+        }
+    }
+
+}
