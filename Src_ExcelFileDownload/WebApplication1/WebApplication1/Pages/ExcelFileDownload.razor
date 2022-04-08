@@ -1,0 +1,41 @@
+﻿@page "/ExcelFileDownload"
+@inject IBlazorDownloadFileService BlazorDownloadFileService
+
+<h1>Download Excel File</h1>
+
+<input type="text" @bind="@_TextDate">
+
+<button class="btn btn-primary" @onclick="DownloadExec">Excel file download</button>
+
+
+@code {
+
+    private string _TextDate;
+
+    private async Task DownloadExec()
+    {
+        string excelFilePath = Path.Combine(@".\Template\", "TemplateE.xlsx");
+        byte[] byteArray = File.ReadAllBytes(excelFilePath);
+        byte[] exportExcels_ByteArray;
+
+        using (var memoryStream = new MemoryStream())
+        {
+            memoryStream.Write(byteArray, 0, (int)byteArray.Length);
+
+            using (var wb = new XLWorkbook(memoryStream))
+            {
+                var sheet = wb.Worksheets.Worksheet("Sheet1");
+
+                sheet.Cell("A1").Value = _TextDate;
+
+                wb.Save();
+            }
+
+            exportExcels_ByteArray = memoryStream.ToArray();
+        }
+
+        string filename = $"Export_{DateTime.Now.ToString("yyyyMMddhhmmss")}.xlsx";
+        var result = await BlazorDownloadFileService.DownloadFile(filename, exportExcels_ByteArray, System.Net.Mime.MediaTypeNames.Application.Octet);
+    }
+}
+
