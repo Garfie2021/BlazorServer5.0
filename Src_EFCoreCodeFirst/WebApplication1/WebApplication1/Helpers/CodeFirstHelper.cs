@@ -21,7 +21,7 @@ namespace WebApplication1.Helpers
             {
                 Debug.WriteLine($"[Code First SQL]" + Environment.NewLine + msg);
 
-                _logger.LogDebug($"[Code First SQL]" + Environment.NewLine + msg);
+                _logger.LogInformation($"[Code First SQL]" + Environment.NewLine + msg);
             }
         }
 
